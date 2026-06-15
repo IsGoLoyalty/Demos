@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsGo | Showroom de Soluciones Digitales</title>
+    <!-- Google Fonts para una tipografía limpia y moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES DE MARCA --- */
+        :root {
+            --bg-principal: #0b0c10;
+            --bg-card: #1f2833;
+            --azul-rey: #0b4fbc;
+            --amarillo-acento: #ffc107;
+            --texto-blanco: #ffffff;
+            --gris-texto: #94a3b8;
+        }
+
+        /* --- RESET Y ESTILOS BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-blanco);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* --- HEADER Y LOGO --- */
+        header {
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo-container {
+            max-width: 180px; /* Ajusta el tamaño máximo de tu logo aquí */
+            margin: 0 auto 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .tagline {
+            color: var(--gris-texto);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin: 20px 0 40px 0;
+        }
+
+        .intro-text h2 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        /* --- GRID DE 6 DEMOS --- */
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- TARJETA DE DEMO (CARD) --- */
+        .demo-card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* Efecto hover sutil para desktop */
+        @media (hover: hover) {
+            .demo-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 30px rgba(11, 79, 188, 0.2);
+                border-color: rgba(11, 79, 188, 0.3);
+            }
+        }
+
+        /* Contenedor de la imagen/mockup */
+        .card-preview {
+            position: relative;
+            height: 180px;
+            background: linear-gradient(135deg, #121c24, #0b4fbc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+
+        /* Contenido de la tarjeta */
+        .card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-body h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card-body p {
+            color: var(--gris-texto);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1; /* Alinea los botones al fondo automáticamente */
+        }
+
+        /* Etiquetas / Badges */
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--texto-blanco);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tag.destacado {
+            background-color: rgba(11, 79, 188, 0.15);
+            color: #64b5f6;
+            border-color: rgba(11, 79, 188, 0.3);
+        }
+
+        /* Botón de acción */
+        .btn-demo {
+            display: block;
+            width: 100%;
+            background-color: var(--amarillo-acento);
+            color: #000000;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+        }
+
+        .btn-demo:active {
+            background-color: #e0a800;
+            transform: scale(0.98);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado con tu Logo -->
+    <header>
+        <div class="logo-container">
+            <!-- Reemplaza 'logo-isgo.png' por la ruta real de tu logotipo -->
+            <img src="logo.png" alt="IsGo Logo" class="logo-img">
+        </div>
+        <p class="tagline">Soluciones Digitales</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="intro-text">
+            <h2>Demos Interactivos</h2>
+            <p style="color: var(--gris-texto); font-size: 0.95rem;">Explora e interactúa con nuestros servicios en tiempo real.</p>
+        </div>
+
+        <!-- Rejilla de 6 proyectos -->
+        <main class="demos-grid">
+
+            <!-- RECUADRO 2: FIDELIZACIÓN (Ej. Laser Plus) -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">MONEDERO DIGITAL</div>
+                    <!--<img src="laser.png" alt="Monedero Digital"> -->
+                </div>
+                <div class="card-body">
+                    <h3>Monedero Digital & Loyalty</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Clientes</span>
+                        <span class="tag">Fidelización</span>
+                    </div>
+                    <p>Sistema de acumulación de puntos y lealtad de clientes para impulsar ventas recurrentes.</p>
+                    <a href="https://laser-plus.github.io/Loyalty/" target="_blank" class="btn-demo">Probar Monedero</a>
+                </div>
+            </div>
+
+            <!-- RECUADRO 4: MENÚ DIGITAL / RESTAURANTES -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">MENÚ RESTAURANTES</div>
+                    <!-- <img src="img/demo-restaurante.webp" alt="Menú Digital"> -->
+                </div>
+                <div class="card-body">
+                    <h3>Menú Digital Interactivo</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Food</span>
+                        <span class="tag">Pedidos</span>
+                    </div>
+                    <p>Catálogo digital auto-administrable con pedidos directos a WhatsApp, actualización de stock en tiempo real y carrito de compras.</p>
+                    <a href="menu.html" target="_blank" class="btn-demo">Explorar Menú</a>
+                </div>
+            </div>
+
+            <!-- RECUADRO 3: SISTEMA DE GESTION / EVENTOS -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">SISTEMA DE GESTIÓN PARA NEGOCIOS</div>
+                    <!-- <img src="img/demo-invitaciones.webp" alt="Invitaciones Interactivas"> -->
+                </div>
+                <div class="card-body">
+                    <h3>Sistema Personalizado para Gestión</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Gestión</span>
+                        <span class="tag">Negocio</span>
+                    </div>
+                    <p>Sistema personalizado a las necesidades para la gestión de negocios (inventario, punto de venta, tickets)</p>
+                    <a href="sistema.html" target="_blank" class="btn-demo">Ver Experiencia</a>
+                </div>
+            </div>
+
+            <!-- RECUADRO 1: GESTIÓN DENTAL (Ej. Ortonova) -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">CATÁLOGO DE SERVICIOS</div>
+                    <!--<img src="img/demo-odontologia.webp" alt="Gestión Dental">-->
+                </div>
+                <div class="card-body">
+                    <h3>Gestión en Catálogo de Servicios</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Catálogo</span>
+                        <span class="tag">Administración</span>
+                    </div>
+                    <p>Catálogo para muestra de servicios con incorporación a pedir servicios via WhatsApp </p>
+                    <a href="web.html" target="_blank" class="btn-demo">Interactuar con la Demo</a>
+                </div>
+            </div>
+
+            <!-- RECUADRO 5: E-COMMERCE / TIENDA VIRTUAL -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">CATÁLOGO DIGITAL</div>
+                    <!-- <img src="img/demo-tienda.webp" alt="Tienda Virtual"> -->
+                </div>
+                <div class="card-body">
+                    <h3>Catálogo-Tienda</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Online</span>
+                        <span class="tag">Catálogo</span>
+                    </div>
+                    <p>Catálogo digital util para mostrar productos y utilidad como tienda digital via WhatsApp</p>
+                    <a href="catalogo.html" target="_blank" class="btn-demo">Ver Tienda</a>
+                </div>
+            </div>
+
+            <!-- RECUADRO 6: PÁGINAS DE CAPTACIÓN / LANDING PAGES -->
+            <div class="demo-card">
+                <div class="card-preview">
+                    <div style="color: rgba(255,255,255,0.2); font-weight:800; font-size:1.1rem;">Pagina Web</div>
+                    <!-- <img src="img/demo-landing.webp" alt="Landing Page"> -->
+                </div>
+                <div class="card-body">
+                    <h3>Pagina Web</h3>
+                    <div class="tags-container">
+                        <span class="tag destacado">Diseño</span>
+                        <span class="tag">Web</span>
+                    </div>
+                    <p>Sitios web de una sola página enfocados en captación de clientes potenciales diseñado para cada cliente</p>
+                    <a href="https://isgoloyalty.github.io/Home/" target="_blank" class="btn-demo">Ver Landing</a>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <footer>
+        &copy; 2026 IsGo. Todos los derechos reservados.
+    </footer>
+
+</body>
+</html>

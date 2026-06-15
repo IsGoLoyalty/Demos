@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsGo System - Joyería Elite Demo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <style>
+        :root {
+            --bg-space: #0B0F19;
+            --bg-card: #161B26;
+            --isgo-brand-color: #00F5D4;
+            --isgo-purple: #A06AF9;
+            --text-white: #FFFFFF;
+            --text-muted: #94A3B8;
+            --border-line: rgba(255, 255, 255, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        html, body { width: 100%; height: 100%; background-color: #060911; overflow: hidden; }
+
+        .app-viewport { width: 100vw; height: 100vh; background-color: var(--bg-space); display: flex; flex-direction: column; }
+
+        /* Header */
+        .main-header { height: 70px; background-color: #0F131E; border-bottom: 1px solid var(--border-line); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; z-index: 5; }
+        .user-trigger { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-line); }
+        .user-trigger:hover { border-color: var(--isgo-brand-color); }
+        .user-icon { font-size: 1.8rem; color: var(--text-white); }
+        .user-text { font-size: 0.85rem; color: var(--text-white); font-weight: 500; }
+        .main-header h2 { font-size: 1.3rem; color: #fff; font-weight: 800; }
+        .brand-glow { color: var(--isgo-brand-color); text-shadow: 0 0 10px rgba(0, 245, 212, 0.3); font-weight: 300; }
+        .system-status { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+        .status-dot { width: 8px; height: 8px; background-color: #00FF66; border-radius: 50%; box-shadow: 0 0 8px #00FF66; }
+
+        /* 📊 Dashboard Superior */
+        .dashboard-overview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px 24px 0 24px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-line);
+            padding: 16px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .stat-card h3 { color: var(--text-white); font-size: 1.3rem; font-weight: 600; }
+        .stat-card p { color: var(--text-muted); font-size: 0.8rem; }
+        .stat-card span { font-size: 2.2rem; }
+        .icon-blue { color: #3B82F6; }
+        .icon-cyan { color: var(--isgo-brand-color); }
+        .icon-purple { color: var(--isgo-purple); }
+
+        /* Workspace */
+        .workspace { flex-grow: 1; padding: 24px; overflow-y: auto; display: flex; justify-content: center; align-items: center; }
+        .view-active { width: 100%; max-width: 1200px; display: block; animation: fadeIn 0.2s ease-out; }
+        .view-hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Grid de Funciones */
+        .grid-funciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+        .funcion-card { display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.2s; }
+        .funcion-card:hover { transform: translateY(-5px); }
+        .circle-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background-color: var(--bg-card); border: 1px solid var(--border-line); transition: all 0.3s; }
+        .circle-icon span { font-size: 2rem; }
+        .icon-cyan span { color: var(--isgo-brand-color); }
+        .funcion-card:hover .icon-cyan { border-color: var(--isgo-brand-color); box-shadow: 0 0 20px rgba(0, 245, 212, 0.2); }
+        .icon-purple span { color: var(--isgo-purple); }
+        .funcion-card:hover .icon-purple { border-color: var(--isgo-purple); box-shadow: 0 0 20px rgba(160, 106, 249, 0.2); }
+        .icon-glow { border-color: var(--isgo-brand-color); box-shadow: 0 0 12px rgba(0, 245, 212, 0.1); }
+        .icon-glow span { color: #fff; text-shadow: 0 0 8px var(--isgo-brand-color); }
+        .funcion-card:hover .icon-glow { background: var(--isgo-brand-color); }
+        .funcion-card:hover .icon-glow span { color: var(--bg-space); text-shadow: none; }
+        .funcion-card h3 { font-size: 0.88rem; font-weight: 500; color: var(--text-white); }
+
+        /* Módulos Internos */
+        .modulo-container { width: 100%; max-width: 750px; background: var(--bg-card); border: 1px solid var(--border-line); border-radius: 16px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .modulo-header { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border-line); padding-bottom: 14px; margin-bottom: 20px; }
+        .back-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border-line); color: var(--text-white); padding: 6px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.8rem; }
+        .back-btn:hover { border-color: var(--isgo-brand-color); }
+        #modulo-titulo { font-size: 1.15rem; color: var(--text-white); font-weight: 600; }
+
+        /* POS Layout */
+        .pos-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; }
+        .cyber-input, .cyber-select { width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-line); border-radius: 8px; color: #fff; font-size: 0.9rem; margin-top: 5px; margin-bottom: 12px; }
+        .cyber-input:focus, .cyber-select:focus { outline: none; border-color: var(--isgo-brand-color); }
+
+        /* Ticket Virtual */
+        .ticket-virtual { background: #F8FAFC; color: #0F172A; font-family: 'Courier New', Courier, monospace; padding: 16px; border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+        .ticket-header { text-align: center; border-bottom: 1px dashed #94A3B8; padding-bottom: 8px; margin-bottom: 10px; }
+        .ticket-row { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px; }
+        .ticket-total { border-top: 1px dashed #94A3B8; margin-top: 8px; padding-top: 6px; font-weight: bold; font-size: 0.95rem; }
+
+        .btn-action { width: 100%; padding: 10px; background: var(--isgo-brand-color); color: #000; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; margin-top: 8px; transition: all 0.2s; }
+        .btn-action:hover { box-shadow: 0 0 15px var(--isgo-brand-color); }
+
+        /* Tablas */
+        .cyber-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        .cyber-table th { background: rgba(0,0,0,0.3); text-align: left; padding: 10px; color: var(--text-muted); border-bottom: 1px solid var(--border-line); }
+        .cyber-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-white); }
+
+        /* Menú Desplegable Lateral */
+        .barra-desplegable { position: absolute; top: 0; left: -330px; width: 320px; height: 100%; background-color: #0F131E; border-right: 1px solid var(--border-line); box-shadow: 20px 0 50px rgba(0,0,0,0.6); transition: left 0.3s ease; display: flex; flex-direction: column; padding: 35px 25px; z-index: 10; }
+        .barra-desplegable.active { left: 0; }
+        .menu-header { display: flex; align-items: center; gap: 15px; margin-bottom: 35px; color: var(--text-white); }
+        .user-icon-menu { font-size: 2.8rem; color: var(--text-muted); }
+        .close-btn { position: absolute; right: 25px; background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-muted); }
+        .menu-links li { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 12px; border-radius: 12px; transition: background 0.2s; margin-bottom: 8px; }
+        .menu-links li:hover { background: rgba(255, 255, 255, 0.04); }
+        .menu-links li span { color: var(--isgo-brand-color); font-size: 1.4rem; }
+        .menu-links strong { display: block; font-size: 0.9rem; color: var(--text-white); }
+        .menu-links small { font-size: 0.75rem; color: var(--text-muted); }
+        .menu-divider { border: none; border-top: 1px solid var(--border-line); margin: 10px 0; }
+        .logout-link span, .logout-link strong { color: #FF4A4A !important; }
+        .logout-link:hover { background: rgba(255, 74, 74, 0.08) !important; }
+
+        .color-picker-wrapper { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .dashboard-overview { grid-template-columns: 1fr; gap: 10px; }
+            .grid-funciones { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .pos-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-viewport">
+        <!-- HEADER TOP BAR -->
+        <header class="main-header">
+            <div class="user-trigger" id="btn-usuario">
+                <div class="avatar-wrapper">
+                    <span class="material-symbols-outlined user-icon">account_circle</span>
+                </div>
+                <span class="user-text">Panel Corporativo</span>
+            </div>
+            <div class="system-brand">
+                <h2>IsGo <span class="brand-glow">System</span></h2>
+            </div>
+            <div class="system-status">
+                <span class="status-dot"></span> <span class="status-text">Core Node Online</span>
+            </div>
+        </header>
+
+        <!-- DASHBOARD INICIAL DE MÉTRICAS -->
+        <section class="dashboard-overview" id="dashboard-resumen">
+            <div class="stat-card">
+                <span class="material-symbols-outlined icon-blue">payments</span>
+                <div><h3>$42,500.00</h3><p>Ventas del Mes</p></div>
+            </div>
+            <div class="stat-card">
+                <span class="material-symbols-outlined icon-cyan">diamond</span>
+                <div><h3>1,240 pzas</h3><p>Stock en Inventario</p></div>
+            </div>
+        </section>
+
+        <!-- ESPACIO DE TRABAJO -->
+        <div class="workspace">
+            
+            <!-- 🎛️ VISTA PRINCIPAL (GRID) -->
+            <div id="vista-grid" class="view-active">
+                <main class="grid-funciones">
+                    <div class="funcion-card" onclick="cargarModulo('pos')">
+                        <div class="circle-icon icon-glow">
+                            <span class="material-symbols-outlined">point_of_sale</span>
+                        </div>
+                        <h3>Punto de Venta (POS)</h3>
+                    </div>
+                    <div class="funcion-card" onclick="cargarModulo('inventario')">
+                        <div class="circle-icon icon-cyan">
+                            <span class="material-symbols-outlined">inventory_2</span>
+                        </div>
+                        <h3>Inventario</h3>
+                    </div>
+                    <div class="funcion-card" onclick="cargarModulo('monedero')">
+                        <div class="circle-icon icon-purple">
+                            <span class="material-symbols-outlined">credit_card</span>
+                        </div>
+                        <h3>Monedero Digital</h3>
+                    </div>
+                    <div class="funcion-card" onclick="cargarModulo('ia')">
+                        <div class="circle-icon icon-cyan">
+                            <span class="material-symbols-outlined">psychology</span>
+                        </div>
+                        <h3>IsGo IA Analytics</h3>
+                    </div>
+                    <div class="funcion-card" onclick="cargarModulo('tickets')">
+                        <div class="circle-icon icon-cyan">
+                            <span class="material-symbols-outlined">receipt_long</span>
+                        </div>
+                        <h3>Historial Tickets</h3>
+                    </div>
+                </main>
+            </div>
+
+            <!-- 📱 VISTA INTERNA DINÁMICA -->
+            <div id="vista-modulo" class="view-hidden">
+                <div class="modulo-container">
+                    <div class="modulo-header">
+                        <button class="back-btn" onclick="volverAlGrid()">
+                            <span class="material-symbols-outlined">arrow_back</span> Dashboard
+                        </button>
+                        <h2 id="modulo-titulo">Módulo</h2>
+                    </div>
+                    <div id="modulo-dinamico-contenido" class="modulo-body"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🚪 BARRA DESPLEGABLE LATERAL -->
+    <aside class="barra-desplegable" id="menu-desplegable">
+        <div class="menu-header">
+            <span class="material-symbols-outlined user-icon-menu">account_circle</span>
+            <div>
+                <h3>Usuario Demo</h3>
+                <small style="color: #00F5D4;">Administrador</small>
+            </div>
+            <button class="close-btn" id="btn-cerrar-menu">&times;</button>
+        </div>
+        <nav class="menu-links">
+            <ul>
+                <li onclick="abrirConfiguracion('Configuración')">
+                    <span class="material-symbols-outlined">settings</span>
+                    <div><strong>Configuración</strong><small>Parámetros de IsGo</small></div>
+                </li>
+                <li onclick="abrirConfiguracion('Perfil')">
+                    <span class="material-symbols-outlined">badge</span>
+                    <div><strong>Perfil</strong><small>Identidad corporativa</small></div>
+                </li>
+                <li onclick="abrirConfiguracion('Ajustes Visuales')">
+                    <span class="material-symbols-outlined">tune</span>
+                    <div><strong>Cambiar Paleta</strong><small>Personalizar colores UI</small></div>
+                </li>
+                <hr class="menu-divider">
+                <li class="logout-link" onclick="location.reload()">
+                    <span class="material-symbols-outlined">logout</span>
+                    <div><strong>Cerrar Sesión</strong></div>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 🧠 LÓGICA DE JAVASCRIPT UNIFICADA -->
+    <script>
+        // MANEJO DE INTERFAZ Y VISTAS
+        const vistaGrid = document.getElementById('vista-grid');
+        const vistaModulo = document.getElementById('vista-modulo');
+        const dashboardResumen = document.getElementById('dashboard-resumen');
+        const moduloTitulo = document.getElementById('modulo-titulo');
+        const moduloContenido = document.getElementById('modulo-dinamico-contenido');
+
+        // MENÚ LATERAL
+        const btnUsuario = document.getElementById('btn-usuario');
+        const btnCerrarMenu = document.getElementById('btn-cerrar-menu');
+        const menuDesplegable = document.getElementById('menu-desplegable');
+
+        btnUsuario.addEventListener('click', () => menuDesplegable.classList.add('active'));
+        btnCerrarMenu.addEventListener('click', () => menuDesplegable.classList.remove('active'));
+
+        // 💎 BASE DE DATOS MOCK LOCAL (JOYERÍA & MAYOREO)
+        const productosMock = [
+            { id: "J-01", nombre: "Producto 1", material: "Cualquier", precio: 350, stock: 14 },
+            { id: "J-02", nombre: "Producto 2", material: "Cualquier", precio: 1850, stock: 4 },
+            { id: "B-05", nombre: "Producto 3", material: "cualquier", precio: 980, stock: 8 }
+        ];
+
+        const vendedorasMock = [
+            { nombre: "Laura Pérez", nivel: "Mayoreo A (50%)", piezasAsignadas: 12, saldoPendiente: "$2,400" },
+            { nombre: "Sofía Rodríguez", nivel: "Mayoreo B (40%)", piezasAsignadas: 7, saldoPendiente: "$1,150" }
+        ];
+
+        const clientesMock = ["María Garza", "Estela Chávez", "Juana Amelia", "Cliente de Mostrador"];
+
+        // HISTORIAL DE TICKETS
+        let historialTickets = [
+            { folio: "T-1004", cliente: "María Garza", item: "Producto 1", total: "$350", via: "WhatsApp" },
+        ];
+
+        // NAVEGACIÓN ENTRE MÓDULOS
+        function cargarModulo(modulo) {
+            vistaGrid.classList.add('view-hidden');
+            vistaModulo.classList.remove('view-hidden');
+            menuDesplegable.classList.remove('active');
+
+            if (modulo === 'pos') {
+                moduloTitulo.innerText = "Punto de Venta / Crear Venta";
+                renderPOS();
+            } 
+            else if (modulo === 'inventario') {
+                moduloTitulo.innerText = "Inventario de Almacén General";
+                renderInventario();
+            }
+            else if (modulo === 'monedero') {
+                moduloTitulo.innerText = "Monedero Digital de Lealtad";
+                moduloContenido.innerHTML = `
+                    <p style="color:var(--text-muted); margin-bottom:15px;">Asignación de puntos en monedero virtual por compras:</p>
+                    <div class="stat-card" style="margin-bottom:15px; border-left:3px solid var(--isgo-brand-color);">
+                        <p>💡 <em>Tip comercial:</em> Explícale a la clienta que por cada $100 de compra, IsGo le calcula automáticamente 10 puntos en su tarjeta digital móvil sin que instale aplicaciones.</p>
+                    </div>
+                `;
+            }
+            else if (modulo === 'ia') {
+                moduloTitulo.innerText = "IsGo IA - Sugerencias de Inventario";
+                moduloContenido.innerHTML = `
+                    <div class="stat-card" style="border-left: 3px solid var(--isgo-purple); margin-bottom: 15px; background: rgba(0,0,0,0.2);">
+                        <div>
+                            <strong style="color:#fff; display:block; margin-bottom:5px;">🤖 IsGo IA Insights:</strong>
+                            <p style="color:var(--text-muted); font-style:italic;">"Detecto que la línea de <strong>Producto 1</strong> se está moviendo 35% más rápido esta semana. Te sugiero redactar una promoción y mandarla a tu red de clintes"</p>
+                        </div>
+                    </div>
+                    <button class="btn-action" onclick="alert('Plantilla enviada a portapapeles: ¡Hola! Te compartimos la nueva línea de Producto 1 lista para distribución...')">Generar Mensaje WhatsApp para Vendedoras</button>
+                `;
+            }
+            else if (modulo === 'tickets') {
+                moduloTitulo.innerText = "Historial de Ventas y Tickets";
+                renderTickets();
+            }
+        }
+
+        function volverAlGrid() {
+            vistaModulo.classList.add('view-hidden');
+            vistaGrid.classList.remove('view-hidden');
+        }
+
+        // 🛒 MÓDULO: PUNTO DE VENTA (POS)
+        function renderPOS() {
+            let opcionesProductos = productosMock.map((p, i) => `<option value="${i}">${p.nombre} — $${p.precio}</option>`).join('');
+            let opcionesClientes = clientesMock.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            moduloContenido.innerHTML = `
+                <div class="pos-layout">
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.85rem;">Seleccionar Artículo:</label>
+                        <select id="pos-producto" class="cyber-select" onchange="actualizarTicketPOS()">
+                            ${opcionesProductos}
+                        </select>
+
+                        <label style="color:var(--text-muted); font-size:0.85rem;">Asignar Cliente:</label>
+                        <select id="pos-cliente" class="cyber-select" onchange="actualizarTicketPOS()">
+                            ${opcionesClientes}
+                        </select>
+
+                        <label style="color:var(--text-muted); font-size:0.85rem;">Método de Entrega de Nota:</label>
+                        <select id="pos-entrega" class="cyber-select">
+                            <option value="impreso">Imprimir Nota de Venta</option>
+                            <option value="whatsapp">Enviar Nota Digital por WhatsApp</option>
+                        </select>
+
+                        <button class="btn-action" onclick="procesarVentaPOS()">⚡ Registrar y Generar Ticket</button>
+                    </div>
+                    <div>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px;">Previsualización de Nota:</p>
+                        <div class="ticket-virtual" id="ticket-preview"></div>
+                    </div>
+                </div>
+            `;
+            actualizarTicketPOS();
+        }
+
+        function actualizarTicketPOS() {
+            const prodIndex = document.getElementById('pos-producto').value;
+            const cliente = document.getElementById('pos-cliente').value;
+            const prod = productosMock[prodIndex];
+            const folio = "T-1005";
+
+            document.getElementById('ticket-preview').innerHTML = `
+                <div class="ticket-header">
+                    <strong>ISGO STORE</strong><br>
+                    <span style="font-size:0.75rem;">Nota de Venta Virtual</span>
+                </div>
+                <div class="ticket-row"><span>Folio:</span><span>${folio}</span></div>
+                <div class="ticket-row"><span>Fecha:</span><span>13/06/2026</span></div>
+                <div class="ticket-row"><span>Cliente:</span><span>${cliente}</span></div>
+                <hr style="border:none; border-top:1px dashed #94A3B8; margin:6px 0;">
+                <div class="ticket-row"><strong>Cant. Descripción</strong><strong>Total</strong></div>
+                <div class="ticket-row"><span>1x ${prod.nombre}</span><span>$${prod.precio}</span></div>
+                <div class="ticket-total">
+                    <div class="ticket-row"><span>TOTAL NETO:</span><span>$${prod.precio}.00</span></div>
+                </div>
+            `;
+        }
+
+        function procesarVentaPOS() {
+            const prodIndex = document.getElementById('pos-producto').value;
+            const cliente = document.getElementById('pos-cliente').value;
+            const entrega = document.getElementById('pos-entrega').value;
+            const prod = productosMock[prodIndex];
+
+            historialTickets.unshift({
+                folio: "T-1005",
+                cliente: cliente,
+                item: prod.nombre,
+                total: `$${prod.precio}`,
+                via: entrega === 'impreso' ? 'Impreso' : 'WhatsApp'
+            });
+
+            if (entrega === 'whatsapp') {
+                const txt = `Hola ${cliente}, gracias por tu compra en IsGo Jewelry. Aquí tienes el detalle de tu nota por el artículo: ${prod.nombre} por un total de $${prod.precio}.00.`;
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(txt)}`, '_blank');
+            } else {
+                alert("¡Venta guardada localmente! Abriendo cola de impresión para Ticket de 58mm.");
+            }
+            cargarModulo('tickets');
+        }
+
+        // 💎 MÓDULO: INVENTARIO
+        function renderInventario() {
+            let filas = productosMock.map(p => `
+                <tr>
+                    <td><strong>${p.id}</strong></td>
+                    <td>${p.nombre}</td>
+                    <td><span style="padding:2px 6px; background:rgba(255,255,255,0.05); border-radius:4px;">${p.material}</span></td>
+                    <td style="color:#00FF66; font-weight:bold;">${p.stock} pzas</td>
+                    <td>$${p.precio}</td>
+                </tr>
+            `).join('');
+
+            moduloContenido.innerHTML = `
+                <table class="cyber-table">
+                    <thead>
+                        <tr><th>ID</th><th>Línea / Artículo</th><th>Material</th><th>Existencias</th><th>Precio Menudeo</th></tr>
+                    </thead>
+                    <tbody>${filas}</tbody>
+                </table>
+            `;
+        }
+
+        
+
+        // 📑 MÓDULO: HISTORIAL DE TICKETS
+        function renderTickets() {
+            let filas = historialTickets.map(t => `
+                <tr>
+                    <td><span style="color:var(--isgo-brand-color); font-weight:bold;">${t.folio}</span></td>
+                    <td>${t.cliente}</td>
+                    <td>${t.item}</td>
+                    <td><strong>${t.total}</strong></td>
+                    <td><span style="font-size:0.75rem; padding:3px 8px; border-radius:12px; background: ${t.via === 'WhatsApp' ? 'rgba(0,230,118,0.15)' : 'rgba(255,255,255,0.05)'}; color: ${t.via === 'WhatsApp' ? '#00E676' : '#fff'};">${t.via}</span></td>
+                </tr>
+            `).join('');
+
+            moduloContenido.innerHTML = `
+                <table class="cyber-table">
+                    <thead>
+                        <tr><th>Folio</th><th>Cliente</th><th>Artículo Vendido</th><th>Monto Total</th><th>Despacho</th></tr>
+                    </thead>
+                    <tbody>${filas}</tbody>
+                </table>
+            `;
+        }
+
+        // CONFIGURACIONES LATERALES
+        function abrirConfiguracion(titulo) {
+            vistaGrid.classList.add('view-hidden');
+            vistaModulo.classList.remove('view-hidden');
+            menuDesplegable.classList.remove('active');
+            moduloTitulo.innerText = titulo;
+
+            if (titulo === 'Ajustes Visuales') {
+                moduloContenido.innerHTML = `
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Personaliza el color de acento del ecosistema para adaptarlo al logotipo del negocio:</p>
+                    <div class="color-picker-wrapper">
+                        <button class="color-dot" style="background:#00F5D4;" onclick="cambiarColorLocal('#00F5D4')"></button>
+                        <button class="color-dot" style="background:#D4AF37;" onclick="cambiarColorLocal('#D4AF37')"></button>
+                        <button class="color-dot" style="background:#3B82F6;" onclick="cambiarColorLocal('#3B82F6')"></button>
+                        <input type="color" onchange="cambiarColorLocal(this.value)" style="margin-left:10px;">
+                    </div>
+                `;
+            } else {
+                moduloContenido.innerHTML = `<p style="color:var(--text-muted);">Configuración interna de IsGo Core.</p>`;
+            }
+        }
+
+        function cambiarColorLocal(c) {
+            document.documentElement.style.setProperty('--isgo-brand-color', c);
+            localStorage.setItem('isgo-brand-color', c);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const colorGuardado = localStorage.getItem('isgo-brand-color') || '#00F5D4';
+            document.documentElement.style.setProperty('--isgo-brand-color', colorGuardado);
+        });
+    </script>
+</body>
+</html>

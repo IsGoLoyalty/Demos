@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsGo Catálogo Dinámico</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; }
+        header { padding: 20px; text-align: center; color: white; }
+        .contenedor { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .tarjeta { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .btn-agregar { width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header id="header-negocio">
+        <h1 id="nombre-negocio">Cargando...</h1>
+        <p id="subtitulo-negocio">Explora nuestro catálogo</p>
+    </header>
+
+    <div class="contenedor">
+        <div id="contenedor-productos" class="grid-productos"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script id="render-script">
+        document.addEventListener("DOMContentLoaded", () => {
+    // 1. Obtener el ID del negocio desde la URL (ej. demo.html?id=retro-brew-cafe)
+    const params = new URLSearchParams(window.location.search);
+    const idNegocio = params.get("id");
+
+    // 2. Verificar si el negocio existe en nuestro config.js
+    if (!idNegocio || !negociosDemo[idNegocio]) {
+        document.body.innerHTML = `<h1 style="text-align:center; margin-top:50px; color:#ff0000;">
+            ❌ Error: Negocio no encontrado. Asegúrate de usar ?id=retro-brew-cafe, ?id=vibe-wardrobe o ?id=apex-studio-barber en la URL.
+        </h1>`;
+        return;
+    }
+
+    // 3. Jalar la información del negocio seleccionado
+    const infoNegocio = negociosDemo[idNegocio];
+
+    // 4. Aplicar los colores dinámicamente al HTML
+    document.getElementById("header-negocio").style.backgroundColor = infoNegocio.colorPrimario;
+    document.getElementById("nombre-negocio").innerText = infoNegocio.nombre;
+    document.getElementById("subtitulo-negocio").innerText = `Catálogo de tipo: ${infoNegocio.categoria.toUpperCase()}`;
+
+    // 5. Renderizar los productos o servicios
+    const contenedor = document.getElementById("contenedor-productos");
+    contenedor.innerHTML = ""; // Limpiar por si acaso
+
+    infoNegocio.productos.forEach(producto => {
+        // Crear el cascarón de la tarjeta
+        const tarjeta = document.createElement("div");
+        tarjeta.classList.add("tarjeta");
+
+        // Estructura interna de la tarjeta de forma dinámica
+        let detalleEspecifico = "";
+        
+        if (infoNegocio.categoria === "tienda" && producto.tallas) {
+            detalleEspecifico = `<p><strong>Tallas:</strong> ${producto.tallas.join(", ")}</p>`;
+        } else if (infoNegocio.categoria === "servicios" && producto.duracion) {
+            detalleEspecifico = `<p>⏱ <strong>Duración:</strong> ${producto.duracion}</p>`;
+        } else if (infoNegocio.categoria === "restaurante" && producto.tipo) {
+            detalleEspecifico = `<p>🍽 <strong>Categoría:</strong> ${producto.tipo}</p>`;
+        }
+
+        tarjeta.innerHTML = `
+            <h3>${producto.nombre}</h3>
+            <p style="color: #666; font-size: 14px;">${producto.desc}</p>
+            ${detalleEspecifico}
+            <p style="font-size: 18px; font-weight: bold; color: ${infoNegocio.colorPrimario};">$${producto.precio}.00</p>
+            <button class="btn-agregar" style="background-color: ${infoNegocio.colorAcento}; color: #000;" onclick="agregarAlCarrito('${producto.id}', '${producto.nombre}', ${producto.precio})">
+                Agregar al Carrito
+            </button>
+        `;
+
+        contenedor.appendChild(tarjeta);
+    });
+});
+
+// Función provisional para el carrito para que no marque error al dar clic
+function agregarAlCarrito(id, nombre, precio) {
+    alert(`Añadido al carrito: ${nombre} ($${precio})`);
+}
+    </script>
+</body>
+</html>

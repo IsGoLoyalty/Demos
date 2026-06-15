@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsGo Ecosistema - Ortonova Clínica Dental</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0A369D;   /* Azul Rey Corporativo */
+            --secondary-blue: #134ED1; /* Azul Vibrante */
+            --accent-yellow: #FFC857;  /* Amarillo de acento para CTA */
+            --text-dark: #222222;
+            --text-muted: #666666;
+            --bg-light: #F4F7FC;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Medical Header */
+        header {
+            background: var(--card-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            color: var(--primary-blue);
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Intro Section */
+        .clinic-hero {
+            max-width: 900px;
+            margin: 40px auto 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .clinic-hero h2 {
+            font-size: 28px;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+        }
+
+        .clinic-hero p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Category Filter Tabs */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(10, 54, 157, 0.2);
+        }
+
+        /* Medical Services Grid */
+        .services-container {
+            max-width: 1000px;
+            margin: 0 auto 120px auto;
+            padding: 0 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-light);
+            color: var(--primary-blue);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .service-icon {
+            color: var(--secondary-blue);
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            padding-right: 60px; /* Evita empalme con el badge */
+        }
+
+        .service-card .desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .service-duration {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .service-duration i {
+            margin-right: 5px;
+            color: var(--primary-blue);
+        }
+
+        .service-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .add-service-btn {
+            width: 100%;
+            background: var(--bg-light);
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-service-btn.selected {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Floating Corporate Appointment Bar */
+        .appointment-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            width: calc(100% - 40px);
+            max-width: 600px;
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(10, 54, 157, 0.3);
+            z-index: 99;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .appointment-bar.active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .appointment-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .appointment-info p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .book-btn {
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 200, 87, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .book-btn:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corporate Navbar -->
+    <header>
+        <h1>Ortonova</h1>
+        <p>Catálogo de Servicios · Panel de Citas Inteligente</p>
+    </header>
+
+    <!-- Clinic Intro -->
+    <div class="clinic-hero">
+        <h2>Atención Odontológica Especializada</h2>
+        <p>Selecciona los tratamientos correspondientes para estimar el presupuesto de tu consulta y enviar una solicitud directa de cita con nuestros especialistas.</p>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filtrarCategoria('todos', this)">Todos los servicios</button>
+        <button class="filter-btn" onclick="filtrarCategoria('diagnostico', this)">Diagnóstico</button>
+        <button class="filter-btn" onclick="filtrarCategoria('estetica', this)">Estética Dental</button>
+        <button class="filter-btn" onclick="filtrarCategoria('ortodoncia', this)">Ortodoncia</button>
+    </div>
+
+    <!-- Medical Services Container -->
+    <div class="services-container">
+        <div class="services-grid">
+            
+            <!-- Service 1 -->
+            <div class="service-card" data-category="diagnostico">
+                <span class="service-badge">Diagnóstico</span>
+                <div class="service-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <div>
+                    <h3>Valoración Completa + Rx</h3>
+                    <p class="desc">Evaluación intraoral detallada mediante cámara de alta resolución y toma de radiografía periapical básica.</p>
+                </div>
+                <div>
+                    <div class="service-meta">
+                        <span class="service-duration"><i class="fa-regular fa-clock"></i>30 min</span>
+                        <span class="service-price">$450.00</span>
+                    </div>
+                    <button class="add-service-btn" onclick="toggleServicio('Valoración Completa', 450, this)">
+                        <i class="fa-solid fa-plus"></i> <span>Seleccionar</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-card" data-category="estetica">
+                <span class="service-badge">Estética</span>
+                <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
+                <div>
+                    <h3>Limpieza Ultrasónica Premium</h3>
+                    <p class="desc">Remoción avanzada de sarro y placa bacteriana con tecnología de ultrasonido, acabado con pulido de pasta profiláctica.</p>
+                </div>
+                <div>
+                    <div class="service-meta">
+                        <span class="service-duration"><i class="fa-regular fa-clock"></i>45 min</span>
+                        <span class="service-price">$800.00</span>
+                    </div>
+                    <button class="add-service-btn" onclick="toggleServicio('Limpieza Ultrasónica', 800, this)">
+                        <i class="fa-solid fa-plus"></i> <span>Seleccionar</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-card" data-category="ortodoncia">
+                <span class="service-badge">Ortodoncia</span>
+                <div class="service-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+                <div>
+                    <h3>Consulta de Ajuste de Brackets</h3>
+                    <p class="desc">Ajuste mensual reglamentario, cambio de ligaduras y arcos de seguimiento para pacientes con tratamiento activo.</p>
+                </div>
+                <div>
+                    <div class="service-meta">
+                        <span class="service-duration"><i class="fa-regular fa-clock"></i>40 min</span>
+                        <span class="service-price">$650.00</span>
+                    </div>
+                    <button class="add-service-btn" onclick="toggleServicio('Ajuste de Brackets', 650, this)">
+                        <i class="fa-solid fa-plus"></i> <span>Seleccionar</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Floating Appointment Bar -->
+    <div class="appointment-bar" id="appointmentBar">
+        <div class="appointment-info">
+            <h4 id="barServiciosCount">0 Servicios seleccionados</h4>
+            <p id="barTotalEstimado">Total estimado: $0.00</p>
+        </div>
+        <button class="book-btn" onclick="solicitarCitaMedica()">Solicitar Cita</button>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        let serviciosSeleccionados = [];
+
+        function toggleServicio(nombre, precio, boton) {
+            const index = serviciosSeleccionados.findIndex(s => s.nombre === nombre);
+            
+            if (index === -1) {
+                // Agregar
+                serviciosSeleccionados.push({ nombre: nombre, precio: precio });
+                boton.classList.add('selected');
+                boton.innerHTML = `<i class="fa-solid fa-check"></i> <span>Seleccionado</span>`;
+            } else {
+                // Remover
+                serviciosSeleccionados.splice(index, 1);
+                boton.classList.remove('selected');
+                boton.innerHTML = `<i class="fa-solid fa-plus"></i> <span>Seleccionar</span>`;
+            }
+
+            actualizarBarraCitas();
+        }
+
+        function actualizarBarraCitas() {
+            const bar = document.getElementById('appointmentBar');
+            const txtCount = document.getElementById('barServiciosCount');
+            const txtTotal = document.getElementById('barTotalEstimado');
+
+            if (serviciosSeleccionados.length > 0) {
+                bar.classList.add('active');
+                txtCount.innerText = `${serviciosSeleccionados.length} ${serviciosSeleccionados.length === 1 ? 'Servicio seleccionado' : 'Servicios seleccionados'}`;
+                
+                let total = serviciosSeleccionados.reduce((sum, s) => sum + s.precio, 0);
+                txtTotal.innerText = `Presupuesto Base: $${total.toLocaleString('es-MX')}.00 MXN`;
+            } else {
+                bar.classList.remove('active');
+            }
+        }
+
+        function filtrarCategoria(categoria, botonActivo) {
+            // Cambiar estado del botón de filtro
+            const botones = document.querySelectorAll('.filter-btn');
+            botones.forEach(btn => btn.classList.remove('active'));
+            botonActivo.classList.add('active');
+
+            // Filtrar las tarjetas físicamente
+            const tarjetas = document.querySelectorAll('.service-card');
+            tarjetas.forEach(tarjeta => {
+                if (categoria === 'todos' || tarjeta.getAttribute('data-category') === categoria) {
+                    tarjeta.style.display = 'flex';
+                } else {
+                    tarjeta.style.display = 'none';
+                }
+            });
+        }
+
+        function solicitarCitaMedica() {
+            let telefono = "526391234567"; // Teléfono demo para la clínica
+            let mensaje = `🦷 *Ortonova - Solicitud de Cita Médica (IsGo)* 🦷\n\n`;
+            mensaje += `Hola, deseo agendar una valoración médica para los siguientes servicios:\n\n`;
+            
+            serviciosSeleccionados.forEach((s, idx) => {
+                mensaje += `🔹 *${s.nombre}* - $${s.precio.toLocaleString('es-MX')}.00\n`;
+            });
+            
+            let total = serviciosSeleccionados.reduce((sum, s) => sum + s.precio, 0);
+            mensaje += `\n*Presupuesto base estimado:* $${total.toLocaleString('es-MX')}.00 MXN\n\n`;
+            mensaje += `_Por favor, confírmenme los horarios disponibles para esta semana._`;
+
+            window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
